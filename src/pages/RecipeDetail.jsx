@@ -10,7 +10,16 @@ export default function RecipeDetail() {
     const meal = mealDatabase.find(m => m.id === id);
     const remaining = { cal: targets.calories - today.caloriesConsumed, protein: targets.protein - today.proteinConsumed };
 
-    if (!meal) return <div style={{ padding: 20 }}>Recipe not found</div>;
+    if (!meal) return (
+        <div style={{ background: 'var(--bg-app)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 20 }}>
+            <div style={{ fontSize: 48, marginBottom: 16 }}>🍽️</div>
+            <h2 style={{ fontWeight: 600, fontSize: 20, color: 'var(--text-1)', marginBottom: 8 }}>Recipe not found</h2>
+            <p style={{ color: 'var(--text-4)', fontSize: 14, marginBottom: 24 }}>This recipe might have been removed or is currently unavailable.</p>
+            <button className="cta-secondary" onClick={() => navigate(-1)} style={{ width: 'auto', padding: '0 24px' }}>
+                <ChevronLeft size={18} /> Go Back
+            </button>
+        </div>
+    );
 
     return (
         <div style={{ background: 'var(--bg-app)' }}>
@@ -89,30 +98,40 @@ export default function RecipeDetail() {
                 <div className="card" style={{ marginBottom: 12 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 14 }}>
                         <h3 style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-1)' }}>Ingredients</h3>
-                        <div className="pill" style={{ background: 'var(--grad-soft)', color: 'var(--success)', fontSize: 12 }}>
-                            {meal.ingredients.filter(i => i.inPrep).length}/{meal.ingredients.length} in prep
-                        </div>
+                        {meal.ingredients && meal.ingredients.length > 0 && (
+                            <div className="pill" style={{ background: 'var(--grad-soft)', color: 'var(--success)', fontSize: 12 }}>
+                                {meal.ingredients.filter(i => i.inPrep).length}/{meal.ingredients.length} in prep
+                            </div>
+                        )}
                     </div>
-                    {meal.ingredients.map((ing, i) => (
-                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}>
-                            <div style={{ width: 8, height: 8, borderRadius: '50%', background: ing.inPrep ? 'var(--success)' : 'var(--warning)', flexShrink: 0 }} />
-                            <span style={{ fontSize: 14, color: 'var(--text-2)', flex: 1 }}>{ing.name}</span>
-                            <span style={{ fontSize: 13, color: 'var(--text-4)' }}>{ing.amount}</span>
-                        </div>
-                    ))}
+                    {meal.ingredients && meal.ingredients.length > 0 ? (
+                        meal.ingredients.map((ing, i) => (
+                            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}>
+                                <div style={{ width: 8, height: 8, borderRadius: '50%', background: ing.inPrep ? 'var(--success)' : 'var(--warning)', flexShrink: 0 }} />
+                                <span style={{ fontSize: 14, color: 'var(--text-2)', flex: 1 }}>{ing.name}</span>
+                                <span style={{ fontSize: 13, color: 'var(--text-4)' }}>{ing.amount}</span>
+                            </div>
+                        ))
+                    ) : (
+                        <div style={{ padding: '12px', textAlign: 'center', color: 'var(--text-4)', fontSize: 13 }}>Ingredients list unavailable.</div>
+                    )}
                 </div>
 
                 {/* Steps preview */}
                 <div className="card" style={{ marginBottom: 16 }}>
                     <h3 style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-1)', marginBottom: 14 }}>Steps</h3>
-                    {meal.steps.map((step, i) => (
-                        <div key={i} style={{ display: 'flex', gap: 12, padding: '10px 0', borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}>
-                            <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--grad-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600, color: 'var(--success)', flexShrink: 0 }}>
-                                {step.order}
+                    {meal.steps && meal.steps.length > 0 ? (
+                        meal.steps.map((step, i) => (
+                            <div key={i} style={{ display: 'flex', gap: 12, padding: '10px 0', borderTop: i > 0 ? '1px solid var(--border)' : 'none' }}>
+                                <div style={{ width: 24, height: 24, borderRadius: '50%', background: 'var(--grad-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 600, color: 'var(--success)', flexShrink: 0 }}>
+                                    {step.order || i + 1}
+                                </div>
+                                <span style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.5 }}>{step.text}</span>
                             </div>
-                            <span style={{ fontSize: 14, color: 'var(--text-2)', lineHeight: 1.5 }}>{step.text}</span>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <div style={{ padding: '12px', textAlign: 'center', color: 'var(--text-4)', fontSize: 13 }}>Instructions unavailable.</div>
+                    )}
                 </div>
             </div>
 

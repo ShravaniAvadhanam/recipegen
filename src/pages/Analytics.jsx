@@ -8,11 +8,22 @@ export default function Analytics() {
     const { weeklyData, today, targets } = useStore();
     const [activeTab, setActiveTab] = useState('This Week');
 
-    const insights = [
-        { border: '#B2F042', icon: '✅', text: 'Hit protein 5/7 days this week', sub: 'Keep up the great work!' },
-        { border: '#E55733', icon: '📅', text: 'Tuesday had no meals logged', sub: 'Try setting a reminder' },
-        { border: '#B286FD', icon: '📊', text: 'Health score 82 — great week!', sub: 'Top 15% of users' },
-    ];
+    const missedDays = weeklyData.filter(d => d.calories === 0);
+    const proteinHits = weeklyData.filter(d => d.protein >= targets.protein * 0.9).length;
+    const calHits = weeklyData.filter(d => Math.abs(d.calories - targets.calories) <= 200).length;
+
+    const insights = [];
+
+    // 1. Protein hits
+    if (proteinHits >= 4) insights.push({ border: '#B2F042', icon: '💪', text: `Hit protein ${proteinHits}/7 days`, sub: 'Great consistency!' });
+    else insights.push({ border: '#E55733', icon: '🍗', text: `Protein hit ${proteinHits}/7 days`, sub: `Aim for ${targets.protein}g daily` });
+
+    // 2. Missed days
+    if (missedDays.length > 0) insights.push({ border: '#E55733', icon: '📅', text: `${missedDays[0].day} had no meals logged`, sub: 'Try setting a reminder' });
+    else insights.push({ border: '#B2F042', icon: '🔥', text: 'Logged tracking every day', sub: 'Perfect streak!' });
+
+    // 3. Calorie accuracy
+    insights.push({ border: '#B286FD', icon: '🎯', text: `Hit calorie target ${calHits} days`, sub: 'Within 200 kcal margin' });
 
     const macroData = [
         { name: 'Protein', value: today.proteinConsumed, color: '#B286FD' },

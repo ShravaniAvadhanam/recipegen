@@ -16,6 +16,7 @@ export default function Profile() {
                 { icon: Target, label: 'Calorie target', value: `${targets.calories} kcal` },
                 { icon: Target, label: 'Protein target', value: `${targets.protein}g` },
                 { icon: Target, label: 'Activity level', value: user.activityLevel },
+                { icon: Target, label: 'Age / Gender', value: `${user.age} · ${user.gender}` },
             ]
         },
         {
@@ -117,7 +118,7 @@ export default function Profile() {
                     </motion.div>
 
                     <p style={{ fontSize: 12, color: 'var(--text-4)', textAlign: 'center', marginTop: 20 }}>
-                        RecipeGen v1.0 · Made with 🧑‍🍳 for Shravani
+                        RecipeGen v1.0 · Made with 🧑‍🍳 for {user.name || "you"}
                     </p>
                 </div>
 

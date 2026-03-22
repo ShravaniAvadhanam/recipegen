@@ -28,11 +28,24 @@ export default function MealPrep() {
     const [activeCategory, setActiveCategory] = useState('All');
     const [showAdd, setShowAdd] = useState(false);
     const [search, setSearch] = useState('');
+    const [sortBy, setSortBy] = useState('expiry');
+    const [showExpiringOnly, setShowExpiringOnly] = useState(false);
 
-    const filteredItems = mealPrep.filter(item => {
+    let filteredItems = mealPrep.filter(item => {
         if (activeCategory !== 'All' && item.category !== categoryMap[activeCategory]) return false;
         if (search && !item.name.toLowerCase().includes(search.toLowerCase())) return false;
+        if (showExpiringOnly && item.daysLeft > 2) return false;
         return true;
+    });
+
+    filteredItems.sort((a, b) => {
+        if (sortBy === 'expiry') return a.daysLeft - b.daysLeft;
+        if (sortBy === 'name') return a.name.localeCompare(b.name);
+        if (sortBy === 'qty') {
+            const getVal = q => parseFloat(q) || 0;
+            return getVal(b.quantity) - getVal(a.quantity);
+        }
+        return 0;
     });
 
     const handleQuickAdd = (item) => {
@@ -83,13 +96,25 @@ export default function MealPrep() {
                     </div>
 
                     {/* Search */}
-                    <div style={{ position: 'relative', marginBottom: 14 }}>
+                    <div style={{ position: 'relative', marginBottom: 12 }}>
                         <Search size={18} color="var(--text-4)" style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)' }} />
                         <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search your prep..."
                             style={{
                                 width: '100%', background: 'var(--surface)', border: 'none', borderRadius: 13,
                                 padding: '12px 14px 12px 40px', fontFamily: "'Outfit'", fontSize: 14, outline: 'none',
                             }} />
+                    </div>
+
+                    {/* Filters Row */}
+                    <div style={{ display: 'flex', gap: 10, marginBottom: 16 }}>
+                        <select value={sortBy} onChange={e => setSortBy(e.target.value)} style={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 999, padding: '6px 14px', color: 'var(--text-2)', fontSize: 13, outline: 'none', cursor: 'pointer', appearance: 'none' }}>
+                            <option value="expiry">Sort by Expiry</option>
+                            <option value="name">Sort by Name</option>
+                            <option value="qty">Sort by Quantity</option>
+                        </select>
+                        <div onClick={() => setShowExpiringOnly(!showExpiringOnly)} className="pill" style={{ background: showExpiringOnly ? 'rgba(239,68,68,0.15)' : 'var(--surface)', color: showExpiringOnly ? 'var(--danger)' : 'var(--text-3)', border: showExpiringOnly ? '1px solid var(--danger)' : '1px solid transparent' }}>
+                            ⚠️ Expiring Soon
+                        </div>
                     </div>
 
                     {/* Grid */}
@@ -99,8 +124,8 @@ export default function MealPrep() {
                                 <motion.div key={item.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.045 }}
                                     className="card" style={{
                                         padding: 14, position: 'relative', textAlign: 'center',
-                                        border: item.daysLeft <= 1 ? '1.5px solid var(--danger)' : '1px solid var(--border)',
-                                        background: item.daysLeft <= 1 ? 'rgba(255,71,87,0.12)' : 'var(--surface)',
+                                        border: item.daysLeft <= 2 ? '1.5px solid var(--danger)' : '1px solid var(--border)',
+                                        background: item.daysLeft <= 2 ? 'rgba(255,71,87,0.12)' : 'var(--surface)',
                                     }}>
                                     {/* Category dot */}
                                     <div style={{
@@ -118,9 +143,9 @@ export default function MealPrep() {
                                     <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-1)' }}>{item.name}</div>
                                     <div style={{ fontWeight: 400, fontSize: 13, color: 'var(--text-4)', marginTop: 2 }}>{item.quantity}</div>
                                     {/* Expiry state */}
-                                    {item.daysLeft <= 1 ? (
+                                    {item.daysLeft <= 2 ? (
                                         <div className="pill" style={{ background: 'rgba(239,68,68,0.1)', color: 'var(--danger)', fontSize: 11, marginTop: 6, padding: '3px 10px' }}>
-                                            ⚠️ {item.daysLeft <= 0 ? 'Expired' : '1 day'}
+                                            ⚠️ {item.daysLeft <= 0 ? 'Expired' : `${item.daysLeft} day${item.daysLeft === 1 ? '' : 's'}`}
                                         </div>
                                     ) : item.daysLeft <= 3 ? (
                                         <div className="pill" style={{ background: 'rgba(229,87,51,0.15)', color: '#E55733', fontSize: 11, marginTop: 6, padding: '3px 10px' }}>

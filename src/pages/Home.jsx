@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Bell, ChevronRight, Droplets } from 'lucide-react';
+import { Bell, ChevronRight, Plus } from 'lucide-react';
 import useStore from '../store';
 import SVGGradientRing, { MacroTrio } from '../components/SVGGradientRing';
 const stagger = (i) => ({
@@ -25,6 +25,13 @@ export default function Home() {
     const expiringItems = mealPrep.filter(p => p.daysLeft <= 1);
     const proteinGap = remaining.protein > 40;
     const missedBreakfast = today.meals.filter(m => m.category === 'breakfast').length === 0;
+
+    const mealsByCat = {
+        breakfast: today.meals.filter(m => m.category === 'breakfast'),
+        lunch: today.meals.filter(m => m.category === 'lunch'),
+        dinner: today.meals.filter(m => m.category === 'dinner'),
+        snack: today.meals.filter(m => m.category === 'snack')
+    };
 
     let nudge = null;
     if (expiringItems.length > 0) {
@@ -139,26 +146,28 @@ export default function Home() {
                                 </div>
                             </motion.div>
 
-                            {!today.workoutLogged && (
-                                <motion.div {...stagger(5)} className="card home-workout-card">
-                                    <div className="home-workout-title">Training today?</div>
-                                    <div className="segmented-control">
-                                        {[
-                                            { label: '🚶 Light', val: 'light' },
-                                            { label: '🏃 Moderate', val: 'moderate' },
-                                            { label: '🏋️ Intense', val: 'intense' },
-                                        ].map(w => (
+                            <motion.div {...stagger(5)} className="card home-workout-card">
+                                <div className="home-workout-title">Training today?</div>
+                                <div className="segmented-control">
+                                    {[
+                                        { label: '🚶 Light', val: 'light' },
+                                        { label: '🏃 Moderate', val: 'moderate' },
+                                        { label: '🏋️ Intense', val: 'intense' },
+                                    ].map(w => {
+                                        const isSelected = today.workoutLogged && today.workoutIntensity === w.val;
+                                        return (
                                             <div
                                                 key={w.val}
-                                                className="segmented-item"
+                                                className={`segmented-item ${isSelected ? 'active' : ''}`}
+                                                style={{ opacity: today.workoutLogged && !isSelected ? 0.5 : 1, pointerEvents: today.workoutLogged ? 'none' : 'auto' }}
                                                 onClick={() => logWorkout(w.val)}
                                             >
                                                 {w.label}
                                             </div>
-                                        ))}
-                                    </div>
-                                </motion.div>
-                            )}
+                                        )
+                                    })}
+                                </div>
+                            </motion.div>
 
                             <motion.div
                                 {...stagger(6)}
@@ -177,32 +186,46 @@ export default function Home() {
                                 <ChevronRight size={22} color="#fff" strokeWidth={2} aria-hidden />
                             </motion.div>
 
-                            {/* Secondary action - manual log */}
-                            <motion.div {...stagger(7)}
-                                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, padding: '14px 18px', background: 'var(--surface)', borderRadius: 18, marginBottom: 20, cursor: 'pointer', border: '1px solid var(--border)' }}
-                                onClick={() => navigate('/log')}
-                                role="button" tabIndex={0}
-                            >
-                                <span style={{ fontSize: 16 }}>✏️</span>
-                                <span style={{ fontWeight: 500, fontSize: 15, color: 'var(--text-2)' }}>Log a meal manually</span>
-                            </motion.div>
+                            {/* Secondary action - removed large log button, replaced by sectioned meals */}
+                            <motion.div {...stagger(7)} style={{ marginTop: 28 }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+                                    <h3 className="home-meals-head" style={{ margin: 0 }}>Meals</h3>
+                                </div>
 
-                            {today.meals.length > 0 && (
-                                <motion.div {...stagger(7)} style={{ marginTop: 28 }}>
-                                    <h3 className="home-meals-head">Logged today</h3>
-                                    {today.meals.map((meal, i) => (
-                                        <motion.div key={meal.id} {...stagger(8 + i)} className="card home-meal-row">
-                                            <div className="home-meal-icon">
-                                                {meal.category === 'breakfast' ? '🌅' : meal.category === 'lunch' ? '☀️' : meal.category === 'dinner' ? '🌙' : '🍎'}
+                                {[
+                                    { id: 'breakfast', title: 'Breakfast', icon: '🌅' },
+                                    { id: 'lunch', title: 'Lunch', icon: '☀️' },
+                                    { id: 'dinner', title: 'Dinner', icon: '🌙' },
+                                    { id: 'snack', title: 'Snacks', icon: '🍎' }
+                                ].map((cat, i) => (
+                                    <motion.div key={cat.id} {...stagger(8 + i)} className="home-meal-section">
+                                        <div className="home-meal-section__header">
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <span>{cat.icon}</span>
+                                                <span style={{ fontWeight: 600, fontSize: 16, color: 'var(--text-1)' }}>{cat.title}</span>
                                             </div>
-                                            <div style={{ flex: 1, minWidth: 0 }}>
-                                                <div style={{ fontWeight: 600, fontSize: 15, color: 'var(--text-1)', letterSpacing: '-0.02em' }}>{meal.name}</div>
-                                                <div style={{ fontWeight: 400, fontSize: 12, color: 'var(--text-4)', marginTop: 3 }}>{meal.calories} kcal · {meal.protein}g protein</div>
+                                            <div className="home-meal-section__add" onClick={() => navigate('/log')}>
+                                                <Plus size={14} /> Add
                                             </div>
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
-                            )}
+                                        </div>
+
+                                        {mealsByCat[cat.id].length > 0 ? (
+                                            mealsByCat[cat.id].map(meal => (
+                                                <div key={meal.id} className="card home-meal-row">
+                                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                                        <div style={{ fontWeight: 600, fontSize: 14, color: 'var(--text-1)', letterSpacing: '-0.01em' }}>{meal.name}</div>
+                                                        <div style={{ fontWeight: 400, fontSize: 12, color: 'var(--text-4)', marginTop: 3 }}>{meal.calories} kcal · {meal.protein}g protein</div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div style={{ padding: '12px 16px', background: 'var(--bg-app)', borderRadius: 12, border: '1px dashed var(--border)', fontSize: 13, color: 'var(--text-4)', textAlign: 'center' }}>
+                                                Nothing logged yet
+                                            </div>
+                                        )}
+                                    </motion.div>
+                                ))}
+                            </motion.div>
                         </>
                     )}
                 </div>

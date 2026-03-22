@@ -4,25 +4,27 @@ import { persist } from 'zustand/middleware';
 const useStore = create(persist((set, get) => ({
     // ─── User Profile ───
     user: {
-        name: "Shravani",
+        name: "",
         age: 25,
-        goal: "cut",
-        activityLevel: "active",
-        allergies: ["gluten"],
-        allergyStrength: { gluten: "severe" },
-        dietType: "high-protein",
+        gender: "female", // default, optional
+        goal: "maintain",
+        targetRate: "0.5",
+        activityLevel: "moderate",
+        allergies: [],
+        allergyStrength: {},
+        dietType: "balanced",
         cookFrequency: "daily",
         defaultCookTime: "10-20",
-        preferredCuisines: ["indian", "mediterranean"],
+        preferredCuisines: [],
         onboardingComplete: false,
         seenTooltips: [],
-        streak: 7,
-        streakLastDate: "2026-02-22",
+        streak: 0,
+        streakLastDate: null,
     },
 
     // ─── Daily Targets ───
     targets: {
-        calories: 1680, protein: 120, carbs: 180, fat: 55, water: 2500,
+        calories: 2000, protein: 100, carbs: 250, fat: 65, water: 2500,
     },
 
     // ─── Today's Log ───
@@ -240,6 +242,7 @@ const useStore = create(persist((set, get) => ({
     // ─── Actions ───
     setOnboardingComplete: () => set(s => ({ user: { ...s.user, onboardingComplete: true } })),
     updateUserProfile: (updates) => set(s => ({ user: { ...s.user, ...updates } })),
+    setTargets: (targets) => set(s => ({ targets: { ...s.targets, ...targets } })),
 
     logMeal: (meal) => {
         set(s => ({
