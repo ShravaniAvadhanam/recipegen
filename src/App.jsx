@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import useStore from './store';
-import IPhoneFrame from './components/IPhoneFrame';
+import AppShell from './components/AppShell';
 import Splash from './pages/Splash';
 import Onboarding from './pages/Onboarding';
 import OnboardingComplete from './pages/OnboardingComplete';
@@ -21,7 +21,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      <IPhoneFrame>
+      <AppShell>
         <Toaster
           position="bottom-center"
           toastOptions={{
@@ -53,7 +53,7 @@ function App() {
           <Route path="/log" element={<ManualLog />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
-      </IPhoneFrame>
+      </AppShell>
     </BrowserRouter>
   );
 }

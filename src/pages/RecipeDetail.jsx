@@ -10,10 +10,10 @@ export default function RecipeDetail() {
     const meal = mealDatabase.find(m => m.id === id);
     const remaining = { cal: targets.calories - today.caloriesConsumed, protein: targets.protein - today.proteinConsumed };
 
-    if (!meal) return <div className="screen-content" style={{ padding: 20 }}>Recipe not found</div>;
+    if (!meal) return <div style={{ padding: 20 }}>Recipe not found</div>;
 
     return (
-        <div className="screen-content" style={{ background: 'var(--bg-app)', paddingTop: 0, paddingBottom: 100 }}>
+        <div style={{ background: 'var(--bg-app)' }}>
             {/* Hero */}
             <div style={{ position: 'relative' }}>
                 <img src={meal.image} alt={meal.name} style={{ width: '100%', height: 260, objectFit: 'cover' }} />

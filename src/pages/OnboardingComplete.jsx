@@ -21,7 +21,7 @@ export default function OnboardingComplete() {
     }, []);
 
     return (
-        <div className="screen-content" style={{ background: '#0E0E0E', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 18, height: '100%' }}>
+        <div style={{ background: '#0E0E0E', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 18, minHeight: '100vh', width: '100%' }}>
             {/* Animated checkmark */}
             <motion.svg
                 width={80} height={80} viewBox="0 0 80 80"

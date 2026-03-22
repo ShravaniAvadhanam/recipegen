@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ChevronRight, LogOut, Bell, Shield, Target, Clock, Trash2 } from 'lucide-react';
 import useStore from '../store';
-import { BottomNav } from '../components/IPhoneFrame';
-
 export default function Profile() {
     const navigate = useNavigate();
     const { user, targets, updateUserProfile } = useStore();
@@ -39,10 +37,10 @@ export default function Profile() {
 
     return (
         <>
-            <div className="screen-content" style={{ background: 'var(--bg-app)', paddingBottom: 120 }}>
+            <div style={{ background: 'var(--bg-app)' }}>
                 {/* Header card */}
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{
-                    background: 'var(--grad-dark)', borderRadius: 20, padding: 20, margin: '69px 18px 16px', color: '#fff',
+                    background: 'var(--grad-dark)', borderRadius: 20, padding: 20, margin: '24px 18px 16px', color: '#fff',
                     display: 'flex', alignItems: 'center', gap: 16
                 }}>
                     <div style={{
@@ -124,7 +122,6 @@ export default function Profile() {
                 </div>
 
             </div>
-            <BottomNav />
         </>
     );
 }

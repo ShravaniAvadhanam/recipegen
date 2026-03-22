@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { BarChart, Bar, XAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import useStore from '../store';
-import { BottomNav } from '../components/IPhoneFrame';
-
 const tabs = ['Today', 'This Week', 'This Month'];
 
 export default function Analytics() {
@@ -32,7 +30,7 @@ export default function Analytics() {
 
     return (
         <>
-            <div className="screen-content" style={{ background: 'var(--bg-app)', paddingBottom: 120 }}>
+            <div style={{ background: 'var(--bg-app)' }}>
                 {/* Header */}
                 <div style={{ position: 'sticky', top: 0, zIndex: 50, paddingTop: 59, paddingBottom: 16, paddingLeft: 18, paddingRight: 18, background: 'var(--glass-bg)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)' }}>
                     <h1 style={{ fontWeight: 700, fontSize: 26, color: 'var(--text-1)', marginBottom: 12 }}>Progress & Stats</h1>
@@ -137,7 +135,6 @@ export default function Analytics() {
                 </div>
 
             </div>
-            <BottomNav />
         </>
     );
 }

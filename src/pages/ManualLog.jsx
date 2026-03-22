@@ -86,7 +86,7 @@ export default function ManualLog() {
 
     return (
         <>
-            <div className="screen-content" style={{ background: BG, paddingBottom: 120 }}>
+            <div style={{ background: BG, paddingBottom: 120, minHeight: '100vh' }}>
 
                 {/* Sticky Header */}
                 <div style={{

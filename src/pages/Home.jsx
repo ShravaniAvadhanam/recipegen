@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { Bell, ChevronRight, Droplets } from 'lucide-react';
 import useStore from '../store';
 import SVGGradientRing, { MacroTrio } from '../components/SVGGradientRing';
-import { BottomNav } from '../components/IPhoneFrame';
-
 const stagger = (i) => ({
     initial: { opacity: 0, y: 10 },
     animate: { opacity: 1, y: 0 },
@@ -43,7 +41,7 @@ export default function Home() {
 
     return (
         <>
-            <div className="screen-content home-screen" style={{ background: 'var(--bg-app)', position: 'relative' }}>
+            <div className="home-screen" style={{ position: 'relative' }}>
 
                 <motion.header {...stagger(0)} className="home-header">
                     <div>
@@ -210,7 +208,6 @@ export default function Home() {
                 </div>
 
             </div>
-            <BottomNav />
         </>
     );
 }

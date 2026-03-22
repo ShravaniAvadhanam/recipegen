@@ -5,7 +5,7 @@ export default function Splash() {
     const navigate = useNavigate();
 
     return (
-        <div className="screen-content" style={{ background: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', padding: '60px 24px 40px', position: 'relative', overflow: 'hidden', height: '100%' }}>
+        <div style={{ background: '#000', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', padding: '60px 24px 40px', position: 'relative', overflow: 'hidden', minHeight: '100vh', width: '100%' }}>
             {/* Apple Intelligence style mesh gradient orb */}
             <motion.div
                 animate={{ rotate: 360, scale: [1, 1.05, 1] }}

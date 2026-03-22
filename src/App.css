@@ -3,9 +3,7 @@
 /* Home — premium, minimal layout */
 .home-screen {
   position: relative;
-  padding-top: 0;
-  /* Let header extend behind status bar */
-  padding-bottom: 100px;
+  /* AppShell handles padding-bottom now */
 }
 
 .home-header {
@@ -16,7 +14,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 59px 20px 16px;
+  padding: 24px 20px 16px;
   background: var(--glass-bg);
   -webkit-backdrop-filter: blur(20px);
   backdrop-filter: blur(20px);

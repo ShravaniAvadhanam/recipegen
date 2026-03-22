@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus, X, Search } from 'lucide-react';
 import useStore from '../store';
-import { BottomNav } from '../components/IPhoneFrame';
-
 const categories = ['All', '🍗 Protein', '🥦 Veggies', '🍚 Carbs', '🌿 Flavor'];
 const categoryMap = { '🍗 Protein': 'protein', '🥦 Veggies': 'veggies', '🍚 Carbs': 'carbs', '🌿 Flavor': 'flavor' };
 
@@ -44,7 +42,7 @@ export default function MealPrep() {
 
     return (
         <>
-            <div className="screen-content" style={{ background: 'var(--bg-app)', paddingBottom: 120 }}>
+            <div style={{ background: 'var(--bg-app)' }}>
                 {/* Header */}
                 <div style={{ position: 'sticky', top: 0, paddingTop: 59, background: 'var(--glass-bg)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', padding: '59px 18px 16px', borderBottom: '1px solid var(--border)', zIndex: 50 }}>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -180,7 +178,6 @@ export default function MealPrep() {
                 </AnimatePresence>
 
             </div>
-            <BottomNav />
         </>
     );
 }

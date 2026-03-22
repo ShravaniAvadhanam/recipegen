@@ -18,7 +18,7 @@ export default function CookingComplete() {
     if (!meal) return null;
 
     return (
-        <div className="screen-content" style={{ background: '#0E0E0E', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 18, height: '100%', textAlign: 'center' }}>
+        <div style={{ background: '#0E0E0E', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 18, minHeight: '100vh', textAlign: 'center' }}>
             <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 300, damping: 20 }}>
                 <span style={{ fontSize: 64 }}>🎉</span>
             </motion.div>

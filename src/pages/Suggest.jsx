@@ -3,8 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, Mic, Send, Sparkles } from 'lucide-react';
 import useStore from '../store';
-import { BottomNav } from '../components/IPhoneFrame';
-
 const cravingChips = [
     { emoji: '🍲', label: 'Something warm' },
     { emoji: '🥗', label: 'Quick & light' },
@@ -33,7 +31,7 @@ export default function Suggest() {
 
     return (
         <>
-            <div className="screen-content" style={{ background: 'var(--bg-app)', paddingBottom: 120 }}>
+            <div style={{ background: 'var(--bg-app)' }}>
                 {/* Header */}
                 <div style={{ position: 'sticky', top: 0, zIndex: 50, paddingTop: 59, paddingBottom: 16, paddingLeft: 18, paddingRight: 18, background: 'var(--glass-bg)', backdropFilter: 'blur(20px)', WebkitBackdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -153,7 +151,6 @@ export default function Suggest() {
                 </div>
 
             </div>
-            <BottomNav />
         </>
     );
 }

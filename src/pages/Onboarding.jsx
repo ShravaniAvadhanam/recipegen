@@ -115,7 +115,7 @@ export default function Onboarding() {
     };
 
     return (
-        <div className="screen-content" style={{ background: bg, display: 'flex', flexDirection: 'column', padding: '0 20px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ background: bg, display: 'flex', flexDirection: 'column', padding: '0 20px', position: 'relative', overflow: 'hidden', minHeight: '100vh' }}>
 
             {/* Top bar */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '64px 0 20px', position: 'relative', zIndex: 2 }}>
